@@ -1,33 +1,42 @@
 from flask import Flask , request
 app = Flask(__name__)
-
-@app.route("/alive", methods=['POST', 'GET'])
+localKernelHash = "myMD5Checksum"
+@app.route("/S2C_Alive", methods=['POST', 'GET'])
 def alive():
 	return "I am alive"
-	
-@app.route("/update_av_Kernel", methods=['POST', 'GET'])
+#die clientseite will selber vergleichen 
+@app.route("/S2C_AnswerKernel", methods=['POST', 'GET'])
 def av_Kernel():
-	ans = true
-	return ans
+	return localKernelHash
+#	global localKernelHash
+#	maHash=request.values.get("hash")
+#	if(maHash=="" || maHash.lenght != 32):
+#		return false
+#	else:
+#		if(maHash != localKernelHash):
+#			return true
+#		else:
+#			return false
+#	return true
 
-@app.route("/update_Kernel", methods=['POST', 'GET'])
+@app.route("/S2C_SendKernel", methods=['POST', 'GET'])
 def kernel():
 	return "test URL"
 
-@app.route("/update_av_Core", methods=['POST', 'GET'])
+@app.route("/S2C_AnswerCore", methods=['POST', 'GET'])
 def av_Core():
 	ans = true
 	return ans
 
-@app.route("/update_Core", methods=['POST', 'GET'])
+@app.route("/S2C_SendCore", methods=['POST', 'GET'])
 def core():
 	return "test URL"
 
-@app.route("/update_av_Package", methods=['POST', 'GET'])
+@app.route("/S2C_AnswerPackage", methods=['POST', 'GET'])
 def av_Package():
 	return true
 
-@app.route("/update_Package", methods=['POST', 'GET'])
+@app.route("/S2C_SendPackage", methods=['POST', 'GET'])
 def package():
 	return "test URL"
 
