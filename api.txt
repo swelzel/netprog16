@@ -1,24 +1,23 @@
 Client to server
 
-C2S_Alive -- Client fragt Server, ob dieser läuft/ verfügbar ist
-C2S_AskKernel(Versions-Hash) -- Client stellt Anfrage an Server, ob die Kernel-Version veraltet ist
-C2S_AskCore(Versions-Hash) -- Client stellt Anfrage an Server, ob die Core-Version veraltet ist
-C2S_AskPackage(Paketname, Versions-Hash) -- Client stellt Anfrage an Server, ob die Pakete veraltet sind
+C2S_Alive(Mac-Adresse) -- Client fragt Server, ob dieser läuft/ verfügbar ist
+C2S_AskKernel -- Client fragt Server nach md5-Summe des Kernels
+C2S_AskCore -- Client fragt Server nach md5-Summe des Core
+C2S_AskPackage(Paketname) -- Client fragt Server nach md5-Summe des genannten Pakets
 
-C2S_GetKernel -- Client fragt Server nach URL zum Download der neuen Version
-C2S_GetCore -- Client fragt Server nach URL zum Download der neuen Version
-C2S_GetPackage(Paketname) -- Client fragt Server nach URL zum Download der neuen Version des angegebenen Pakets
+C2S_GetKernelURL -- Client fragt Server nach URL zum Download der neuen Version
+C2S_GetCoreURL -- Client fragt Server nach URL zum Download der neuen Version
+C2S_GetPackageURL(Paketname) -- Client fragt Server nach URL zum Download der neuen Version des angegebenen Pakets
 
 
 
 Server to client
 
 S2C_Alive -- Server antwortet Client, dass er läuft/ verfügbar ist
-S2C_AnswerKernel(true/false) -- Server liefert dem Client ein true, falls eine neue Version verfügbar ist.
-S2C_AnswerCore(true/false) -- Server liefert dem Client ein true, falls eine neue Version verfügbar ist.
-S2C_AnswerPackage(true/false) -- Server liefert dem Client ein true, falls eine neue Version verfügbar ist.
+S2C_AnswerKernel(md5 Summe) -- Server liefert dem Client ein true, falls eine neue Version verfügbar ist.
+S2C_AnswerCore(md5 Summe) -- Server liefert dem Client ein true, falls eine neue Version verfügbar ist.
+S2C_AnswerPackage(md5 Summe) -- Server liefert dem Client ein true, falls eine neue Version verfügbar ist.
 
-S2C_SendKernel(URL) -- Server liefert dem Client eine URL zum Download der neuen Version
-S2C_SendCore(URL) -- Server liefert dem Client eine URL zum Download der neuen Version
-S2C_SendPackage(URL) -- Server liefert dem Client eine URL zum Download der neuen Version
-
+S2C_SendKernelURL(URL) -- Server liefert dem Client eine URL zum Download der neuen Version
+S2C_SendCoreURL(URL) -- Server liefert dem Client eine URL zum Download der neuen Version
+S2C_SendPackageURL(URL) -- Server liefert dem Client eine URL zum Download der neuen Version

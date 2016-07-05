@@ -1,5 +1,10 @@
 Directories:
-/mnt/sda1/tce/extlinux
-/mnt/sda1/tce/core.gz
+/mnt/sda1/tce/boot/extlinux
+/mnt/sda1/tce/boot/core.gz
 /mnt/sda1/tce/optional/wbar.tcz
 /mnt/sda1/tce/optional/wbar.tcz.md5.txt
+Pakete liegen in /mnt/sda1/tce/optional/
+
+TODO: Datei, die Namen von zu aktualisierenden Paketen enthält
+Bash-Skript in .tcz packen, weil Abhängigkeiten
+
