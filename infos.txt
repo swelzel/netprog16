@@ -1,0 +1,5 @@
+Directories:
+/mnt/sda1/tce/extlinux
+/mnt/sda1/tce/core.gz
+/mnt/sda1/tce/optional/wbar.tcz
+/mnt/sda1/tce/optional/wbar.tcz.md5.txt
