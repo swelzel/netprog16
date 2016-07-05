@@ -1,0 +1,14 @@
+So könnte eine Crontab aussehen, die festlegt, welche Skripte zu welcher Zeit ausgeführt werden sollen
+
+# Shell variable for cron
+SHELL=/bin/bash
+# PATH variable for cron
+PATH=/usr/local/bin:/usr/local/sbin:/sbin:/usr/sbin:/bin:/usr/bin:/usr/bin/X11
+#M   S     T M W   Befehl
+#-----------------------------------------------------------------
+@reboot <PFAD ZUM SKRIPT> # Skript, das bei Reboot ausgeführt wird
+@daily <PFAD ZUM SKRIPT> # Skript, das täglich ausgeführt wird
+@hourly <PFAD ZUM SKRIPT> # Skript, das stündlich ausgeführt wird
+#-----------------------------------------------------------------
+
+# Die Zeiten, zu denen die Skripte ausgeführt werden sollen, können genauer definiert werden
