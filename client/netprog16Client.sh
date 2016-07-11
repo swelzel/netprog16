@@ -39,10 +39,22 @@ echo "Client KernelSum is: $CLIENT_KERNEL_MD5"
 #make curl request here for server hash and replace if necessary
 SERVER_KERNEL_MD5=$(curl --silent $SERVER_URL/S2C_AnswerKernel)
 echo "Server KernelSum is: $SERVER_KERNEL_MD5"
+#Some bash dialects have problems with == and =. Have to check for tinycore.
+if [ "$CLIENT_KERNEL_MD5" = "$SERVER_KERNEL_MD5" ]
+then
+	echo "Client Kernel is up-to-date with Serverkernel."
+else
+	echo "Kernel-Hashsum mismatch with Server. Updating Client-Kernel now."
+	#update client kernel here with wget, mv and so on....
+fi
+
 
 
 
 #UPDATE ROOT FILESYSTEM core.gz
+
+
+
 
 
 
