@@ -20,6 +20,8 @@ PATH_CUSTOM_PACKAGE=$MOUNT_POINT/tce/optional/
 PATH_KERNEL=$MOUNT_POINT/tce/boot/vmlinuz
 PATH_CORE=$MOUNT_POINT/tce/boot/core.gz
 
+MAC_ADDR=$(cat /sys/class/net/eth0/address)
+
 
 
 echo "Searching for $PATH_CUSTOM_LIST"
@@ -52,9 +54,17 @@ fi
 
 
 #UPDATE ROOT FILESYSTEM core.gz
-
-
-
+CLIENT_COREGZ_MD5=$(md5sum $PATH_CORE)
+echo "Client core.gz sum is: $CLIENT_CORE_GZ"
+#make curl request for the core.gz
+SERVER_COREGZ_MD5=$(curl --silent $SERVER_URL/S2C_AnswerCore)
+echo "Server core.gz sum is: $SERVER_COREGZ_MD5"
+if [ "$CLIENT_COREGZ_MD5" = "$SERVER_COREGZ_MD5" ]
+then
+	echo "Client core.gz is uptodate."
+else
+	echo "Core.gz-Hashsum mismatch with Server. Updating core,gz now."
+fi
 
 
 
