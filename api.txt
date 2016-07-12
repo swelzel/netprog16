@@ -1,6 +1,6 @@
 Client to server
 
-C2S_Alive(Mac-Adresse) -- Client fragt Server, ob dieser läuft/ verfügbar ist
+C2S_Alive(Mac-Adresse,CPU_Info,VGA_Info) -- Client fragt Server, ob dieser läuft/ verfügbar ist
 C2S_AskKernel -- Client fragt Server nach md5-Summe des Kernels
 C2S_AskCore -- Client fragt Server nach md5-Summe des Core
 C2S_AskPackage(Paketname) -- Client fragt Server nach md5-Summe des genannten Pakets
@@ -13,7 +13,7 @@ C2S_GetPackageURL(Paketname) -- Client fragt Server nach URL zum Download der ne
 
 Server to client
 
-S2C_Alive -- Server antwortet Client, dass er läuft/ verfügbar ist
+S2C_Alive(Mac-Adresse, config): String -- Server antwortet Client, dass er läuft/ verfügbar ist
 S2C_AnswerKernel(md5 Summe) -- Server liefert dem Client ein true, falls eine neue Version verfügbar ist.
 S2C_AnswerCore(md5 Summe) -- Server liefert dem Client ein true, falls eine neue Version verfügbar ist.
 S2C_AnswerPackage(md5 Summe) -- Server liefert dem Client ein true, falls eine neue Version verfügbar ist.
