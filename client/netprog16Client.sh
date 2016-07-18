@@ -20,7 +20,7 @@ PATH_CUSTOM_PACKAGE=$MOUNT_POINT/tce/optional/
 PATH_KERNEL=$MOUNT_POINT/tce/boot/vmlinuz
 PATH_CORE=$MOUNT_POINT/tce/boot/core.gz
 
-MAC_ADDR=$(cat /sys/class/net/eth0/address)
+MAC_ADDR=$(cat /sys/class/net/wlp3s0/address)
 
 
 
@@ -39,7 +39,7 @@ fi
 CLIENT_KERNEL_MD5=$(md5sum $PATH_KERNEL | cut -d ' ' -f1)
 echo "Client KernelSum is: $CLIENT_KERNEL_MD5"
 #make curl request here for server hash and replace if necessary
-SERVER_KERNEL_MD5=$(curl --silent $SERVER_URL/S2C_AnswerKernel)
+SERVER_KERNEL_MD5=$(curl --silent -X POST -d "mac=$MAC_ADDR" $SERVER_URL/S2C_AnswerKernel)
 echo "Server KernelSum is: $SERVER_KERNEL_MD5"
 #Some bash dialects have problems with == and =. Have to check for tinycore.
 if [ "$CLIENT_KERNEL_MD5" = "$SERVER_KERNEL_MD5" ]
@@ -57,7 +57,7 @@ fi
 CLIENT_COREGZ_MD5=$(md5sum $PATH_CORE)
 echo "Client core.gz sum is: $CLIENT_CORE_GZ"
 #make curl request for the core.gz
-SERVER_COREGZ_MD5=$(curl --silent $SERVER_URL/S2C_AnswerCore)
+SERVER_COREGZ_MD5=$(curl --silent -X POST -d "mac=$MAC_ADDR" $SERVER_URL/S2C_AnswerCore)
 echo "Server core.gz sum is: $SERVER_COREGZ_MD5"
 if [ "$CLIENT_COREGZ_MD5" = "$SERVER_COREGZ_MD5" ]
 then
