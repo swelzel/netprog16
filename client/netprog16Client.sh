@@ -67,9 +67,18 @@ else
 fi
 
 
-
+echo "Checking now for updates for custom cebitec apps."
 #looping through file for custom cebitec apps and update them.
 while read listItem
 do
-	echo $listItem
+	echo "Checking Update for $listItem"
 done <$PATH_CUSTOM_LIST
+
+
+
+
+
+
+
+
+
