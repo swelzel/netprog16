@@ -12,3 +12,4 @@ PATH=/usr/local/bin:/usr/local/sbin:/sbin:/usr/sbin:/bin:/usr/bin:/usr/bin/X11
 #-----------------------------------------------------------------
 
 # Die Zeiten, zu denen die Skripte ausgeführt werden sollen, können genauer definiert werden
+
