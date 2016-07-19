@@ -52,7 +52,7 @@ then
 	then
 		echo "Could not get file location from server for the kernel, aborting."
 		exit 1
-	fi
+	ficonfig.sh
 
 	#update client kernel here with wget, mv and so on....
 	wget --quiet -P $PATH_TMP $SERVER_URL/S2C_SendKernel/vmlinuz
@@ -123,18 +123,53 @@ rm -rf $PATH_TMP
 
 
 #Update kernel/ core/ package (Single
-#call: update TYPE PATH API
-#TYPE: "core" = Update core, "kernel" = update kernel, "package" = update package
+#call: update PACKAGE PATH API-ASK API-GET
+#PACKAGE: "core.gz" = Update core, "vmlinuz" = update kernel, "package-name" = update package
 #PATH: Path to local file
-#API: API URL without $SRV
+#API_ASK/ API_GET: API URL without $SRV
 #return: true: update successfull, false: update fail, "null": no update available
-#get return: echo $(update TYPE PATH API)
+#get return: echo $(update PACKAGE PATH API_ASK API_GET)
 function update {
-	TYPE=$1
+	PACKAGE=$1
 	PATH=$2
-	API=$3
+	API_ASK=$3
+	API_GET=$4
 
-	#place update mechanism here...
+	MD5_SUM=$(md5sum $PATH | cut -d ' ' -f1)
+	echo " MD5-SUM is: $MD5_SUM"
+	#make curl request here for server hash and replace if necessary
+	SERVER_RESPONSE=$(curl --silent -X POST -d "mac=$HW_MAC&hash=$MD5_SUM" $SRV/$API_ASK)
+	echo "Server response is: $SERVER_RESPONSE"
+	#Some bash dialects have problems with == and =. Have to check for tinycore.
+	if [ $SERVER_RESPONSE = "True" ]
+	then
+		echo "Client Kernel is up-to-date with Serverkernel."
+	elif [ $SERVER_RESPONSE = "False" ]
+	then
+		echo "Kernel-Hashsum mismatch with Server. Updating Client-Kernel now."
+		URL=$(curl --silent -X POST -d "mac=$HW_MAC" $SRV/$API_GET)
+		if [ $? -ne 0 ]
+		then
+			echo "Could not get file location from server for the kernel, aborting."
+			exit 1
+		fi
+
+		#update client here with wget, mv and so on....
+		wget --quiet -P $PATH_TMP $SRV/$API_GET/$PACKAGE
+		if [ $? -ne 0 ]
+		then
+			echo "Could not download vmlinuz from Server."
+			exit 1
+		fi
+		mv -f $PATH/$PACKAGE $PATH/$PACKAGE.bak
+		mv $PATH_TMP/$PACKAGE $PATH/$PACKAGE
+		echo "Succesfully updated (backuped the old one with .bak in same location...)"
+
+	else
+		echo "Could not get valid response from Server for the Kernel."
+	fi
+
+	echo "---------------------------------------------------------------"
 
 	# Dummy return
 	echo "null"
