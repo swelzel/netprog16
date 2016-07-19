@@ -7,16 +7,12 @@ clientHashmap = dict({})
 global filenames
 filenames = {"kernel-nvidia":"TinyCore-current.iso",
 	"kernel-ati":"TinyCore-current.iso"}
-global localKernelHash
-localKernelHash = "myMD5Checksum"
 
 @app.route("/S2C_Alive", methods=['POST', 'GET'])
 def alive():
 	mac = request.values.get("mac")
-	config2hashmap(request.values.get("cpu"), request.values.get("graka"), mac)
-	#if clientHashmap[mac] == null:
-	#	clientHashmap[mac] = config
-	return "the cake is a lie"
+	#config2hashmap(request.values.get("cpu"), request.values.get("graka"), mac)
+	return "True"
 
 def config2hashmap(cpu, graka, mac):
 	if(cpu == "x86"):
@@ -34,18 +30,13 @@ def config2hashmap(cpu, graka, mac):
 @app.route("/S2C_AnswerKernel", methods=['POST', 'GET'])
 def av_Kernel():
 	mac = request.values.get("mac")
-	maHash = request.valueglobals.get("hash")
+	maHash = request.values.get("hash")
 	
-	if(maHash == "" or maHash.lenght != 32):
+	if(maHash is None):
 		return "False"
 	else:
-		_file = open(filenames["kernel-nvidia"],"rb")
-		lacalKernelHash = hashfile(_file)
-		if(maHash != localKernelHash):
-			return "True"
-		else:
-			return "False"
-	return "True"
+		_file = open("core.gz","rb")
+		return hashfile(_file)
 
 @app.route("/S2C_SendKernel", methods=['POST', 'GET'])
 def kernel():
@@ -74,5 +65,6 @@ def hashfile(afile, hasher=hashlib.md5(), blocksize=65536):
     while len(buffer) > 0:
         hasher.update(buffer)
         buffer = afile.read(blocksize)
-    return hasher.hexdigest()
+    _hash = hasher.hexdigest()
+    return _hash
 
