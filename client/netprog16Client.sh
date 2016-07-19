@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#Load config file
+source config.sh
+
 SERVER_URL=$1
 MOUNT_POINT=$2
 
@@ -13,15 +16,6 @@ else
 	echo $MOUNT_POINT is not a valid directory...exiting.
 	exit 1
 fi
-
-#Build DIR variables...
-PATH_CUSTOM_LIST=$MOUNT_POINT/tce/cebitec_custom_tcz.txt
-PATH_CUSTOM_PACKAGE=$MOUNT_POINT/tce/optional/
-PATH_KERNEL=$MOUNT_POINT/tce/boot/vmlinuz
-PATH_CORE=$MOUNT_POINT/tce/boot/core.gz
-PATH_TMP=$MOUNT_POINT/tmp_downloads
-
-MAC_ADDR=$(cat /sys/class/net/wlp3s0/address)
 
 mkdir -p $PATH_TMP
 
@@ -44,7 +38,7 @@ echo "---------------------------------------------------------------"
 CLIENT_KERNEL_MD5=$(md5sum $PATH_KERNEL | cut -d ' ' -f1)
 echo "Client KernelSum is: $CLIENT_KERNEL_MD5"
 #make curl request here for server hash and replace if necessary
-SERVER_KERNEL_RESPONSE=$(curl --silent -X POST -d "mac=$MAC_ADDR&hash=$CLIENT_KERNEL_MD5" $SERVER_URL/S2C_AnswerKernel)
+SERVER_KERNEL_RESPONSE=$(curl --silent -X POST -d "mac=$HW_MAC&hash=$CLIENT_KERNEL_MD5" $SERVER_URL/S2C_AnswerKernel)
 echo "Server Kernelresponse is: $SERVER_KERNEL_RESPONSE"
 #Some bash dialects have problems with == and =. Have to check for tinycore.
 if [ $SERVER_KERNEL_RESPONSE = "True" ]
@@ -53,7 +47,7 @@ then
 elif [ $SERVER_KERNEL_RESPONSE = "False" ]
 then
 	echo "Kernel-Hashsum mismatch with Server. Updating Client-Kernel now."
-	KERNEL_URL=$(curl --silent -X POST -d "mac=$MAC_ADDR" $SERVER_URL/S2C_SendKernel)
+	KERNEL_URL=$(curl --silent -X POST -d "mac=$HW_MAC" $SERVER_URL/S2C_SendKernel)
 	if [ $? -ne 0 ]
 	then
 		echo "Could not get file location from server for the kernel, aborting."
@@ -83,7 +77,7 @@ echo "---------------------------------------------------------------"
 CLIENT_COREGZ_MD5=$(md5sum $PATH_CORE)
 echo "Client core.gz sum is: $CLIENT_CORE_GZ"
 #make curl request for the core.gz
-SERVER_COREGZ_RESPONSE=$(curl --silent -X POST -d "mac=$MAC_ADDR" $SERVER_URL/S2C_AnswerCore)
+SERVER_COREGZ_RESPONSE=$(curl --silent -X POST -d "mac=$HW_MAC" $SERVER_URL/S2C_AnswerCore)
 echo "Server core.gz response is: $SERVER_COREGZ_RESPONSE"
 if [ $SERVER_COREGZ_RESPONSE = "True" ]
 then
@@ -91,7 +85,7 @@ then
 elif [ $SERVER_COREGZ_RESPONSE = "False" ]
 then
 	echo "Core.gz-Hashsum mismatch with Server. Updating core,gz now."
-	COREGZ_URL=$(curl --silent -X POST -d "mac=$MAC_ADDR" $SERVER_URL/S2C_SendCore)
+	COREGZ_URL=$(curl --silent -X POST -d "mac=$HW_MAC" $SERVER_URL/S2C_SendCore)
 	if [ $? -ne 0 ]
 	then
 		echo "Could not get file location from server for the core filesystem, aborting."
@@ -128,7 +122,23 @@ echo "Cleaning up temporary files..."
 rm -rf $PATH_TMP
 
 
+#Update kernel/ core/ package (Single
+#call: update TYPE PATH API
+#TYPE: "core" = Update core, "kernel" = update kernel, "package" = update package
+#PATH: Path to local file
+#API: API URL without $SRV
+#return: true: update successfull, false: update fail, "null": no update available
+#get return: echo $(update TYPE PATH API)
+function update {
+	TYPE=$1
+	PATH=$2
+	API=$3
 
+	#place update mechanism here...
+
+	# Dummy return
+	echo "null"
+}
 
 
 
